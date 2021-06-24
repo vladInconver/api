@@ -21,7 +21,7 @@
 #### Подробней:
 * **Пользователь:**
     - GET
-        - [user](https://github.com/AndryWJ/mobAPIDoc#user) - `Получение пользователя`
+        - [user](#user) - `Получение пользователя`
         - [user_list](https://github.com/AndryWJ/mobAPIDoc#user_list) - `Получение пользователей`
         - [user_courses](https://github.com/AndryWJ/mobAPIDoc#user_courses) - `Получение доступных курсов пользователя`
         - [user_curators](https://github.com/AndryWJ/mobAPIDoc#user_curators) - `Получение активных курраторств у пользователя`
