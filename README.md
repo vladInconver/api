@@ -22,7 +22,7 @@ vars: `access_token`: [токен доступа]
 
 ####  Пример запроса:
 
-https://80-ballov.ru/oauth/test?access_token=lycngl8s64pvquz8lve614icw5fqxij7rwr9ehwk
+https://develop.80-ballov.ru/oauth/test?access_token=lycngl8s64pvquz8lve614icw5fqxij7rwr9ehwk
 
 Пример ответа:
 
