@@ -1,5 +1,41 @@
 #### Документация методов для взаимодействия с сайтом 80-ballov.ru посредством REST API:
 
+# Авторизация 
+Авторизация выполняетья в 2 этапа.
+1. Получение кода авторизации
+2. Получение токена по коду авторизации
+3. Обновление токена авторизации (токен живет 1 час)
+
+**Инструкции**:
+
+1, 2 - https://wp-oauth.com/docs/general/grant-types/authorization-code/<br>
+3 - Обновление токена: https://wp-oauth.com/docs/general/grant-types/refresh-token/
+
+PS: В инструкции после завершения 2х этапов предлагают вариант тестирования запроса к API.
+Вместо него использовать:
+
+method : POST
+url: https://develop.80-ballov.ru/oauth/test
+
+vars: `access_token`: [токен доступа]
+
+####  Пример запроса:
+
+https://80-ballov.ru/oauth/test?access_token=lycngl8s64pvquz8lve614icw5fqxij7rwr9ehwk
+
+Пример ответа:
+
+    {
+        id :  11 ,
+        access_token :  lycngl8s64pvquz8lve614icw5fqxij7rwr9ehwk ,
+        client_id :  mZzSMLTpedjC1K5tw8pWfbaCyUg7bPpv03Mh2lwd ,
+        user_id :  217784 ,
+        expires : 1616593903,
+        scope :  basic ,
+        ap_generated : null
+    }
+
+
 ####  Сущности с которыми нужно взаимодействие:
 	
 * Пользователь
