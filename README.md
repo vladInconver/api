@@ -1,42 +1,138 @@
 # Документация REST API для 80-ballov.ru
 ### Перечень методов для взаимодействия с сайтом  посредством REST API:
 
-#### Авторизация 
-Авторизация выполняетья в 2 этапа.
-1. Получение кода авторизации
-2. Получение токена по коду авторизации
-3. Обновление токена авторизации (токен живет 1 час)
+# Общее:
+Инструментарий по которому можно будет взаимодействовать с данными сайта методом REST
 
-**Инструкции**:
+    GET — Получить данные
+    POST — Создать данные
+    PUT — Изминить данные
 
-1, 2 - https://wp-oauth.com/docs/general/grant-types/authorization-code/<br>
-3 - Обновление токена: https://wp-oauth.com/docs/general/grant-types/refresh-token/
+# Авторизация
+Для всех роутов получения токена доступа обязательный заголовок авторизации который состоит из значения в кодировке base64 `client_id:client_secret` пример:
 
-PS: В инструкции после завершения 2х этапов предлагают вариант тестирования запроса к API.
-Вместо него использовать:
+`Authorization: Basic cXhaNmZDb09NajRjTks4U1hSSGE1bnVnNnZuc3dsRldTRjM3aHNXMzpMMWZ6TG9zSmY5VGx3bkNDVFo1cGtLbWRxcWtIU2hLRWkwZDRvRk5F`
 
-method : POST
-url: https://develop.80-ballov.ru/oauth/test
+# Роуты авторизации
+URL: https:exemple_domain/oauth/**[rout_name]**
 
-vars: `access_token`: [токен доступа]
+- [token](#token) - `Получение токена по логину и паролю | получение токена по рефреш-токену`
+- [auth_social](#auth_social) - `Получение токена по токену из соц. сетей`
+- [reset_password](#reset_password) - `Восстановление пароля`
 
-####  Пример запроса:
+## token
+Получение токена по логину и паролю или его обновление
 
-https://develop.80-ballov.ru/oauth/test?access_token=lycngl8s64pvquz8lve614icw5fqxij7rwr9ehwk
+**ПРИНИМАЕТ:**
 
-Пример ответа:
+**method:** POST
+
+| переменные | по умолчанию| описание  |
+| :---------- |:---------:|:---------:|
+| grant_type | null | Возможные значения: `password` - получение токена по логину и паролю. `refresh_token` - обновление токена|
+| username | null | Логин или почта пользователя (Только для `grant_type=password`)|
+| password | null | Пароль пользователя (Только для `grant_type=password`)|
+| refresh_token | null | Рефреш токен по которому хотим получить новый токен доступа (Только для `grant_type=refresh_token`)|
+
+Успех
 
     {
-        id :  11 ,
-        access_token :  lycngl8s64pvquz8lve614icw5fqxij7rwr9ehwk ,
-        client_id :  mZzSMLTpedjC1K5tw8pWfbaCyUg7bPpv03Mh2lwd ,
-        user_id :  217784 ,
-        expires : 1616593903,
-        scope :  basic ,
-        ap_generated : null
+        "access_token": {
+            "access_token": "wuoh6l3h3ssvv05owcpkq61dtjvouvnhfhdjufko",
+            "expires_in": 3600,
+            "token_type": "bearer",
+            "scope": "basic",
+            "refresh_token": "il5ze1zidfgqza93iesjioohtylhvryi9u1farx9"
+        },
+        "user_data": {
+            "ID": "160905",
+            "user_login": "adminadminovich",
+            "user_pass": "$djsadjaldaldjaskldjaslkwiwiiwiwii",
+            "user_nicename": "adminadminovich",
+            "user_email": "_andry__@test.net",
+            "user_url": "",
+            "user_registered": "2021-02-23 06:13:03",
+            "user_activation_key": "",
+            "user_status": "0",
+            "display_name": "adminadminovich"
+        }
     }
 
+Неудача
+| переменная | описание  |
+| ---------- |:---------:|
+| `error_message`    | Текст ошибки |
 
+## auth_social
+Получение токена доступа по токену из соц сетей, если пользователь не существует будет зарегистрирован
+
+**ПРИНИМАЕТ:**
+
+**method:** POST
+
+| переменные | по умолчанию| описание  |
+| :---------- |:---------:|:---------:|
+| service |null | Идентификатор соц сети, возможные значения `Google` `Facebook` `VK`
+| token | null | Токен доступа из соц. сети
+
+Успех
+
+    {
+        "access_token": {
+            "access_token": "wuoh6l3h3ssvv05owcpkq61dtjvouvnhfhdjufko",
+            "expires_in": 3600,
+            "token_type": "bearer",
+            "scope": "basic",
+            "refresh_token": "il5ze1zidfgqza93iesjioohtylhvryi9u1farx9"
+        },
+        "user_data": {
+            "ID": "160905",
+            "user_login": "adminadminovich",
+            "user_pass": "$djsadjaldaldjaskldjaslkwiwiiwiwii",
+            "user_nicename": "adminadminovich",
+            "user_email": "_andry__@test.net",
+            "user_url": "",
+            "user_registered": "2021-02-23 06:13:03",
+            "user_activation_key": "",
+            "user_status": "0",
+            "display_name": "adminadminovich"
+        }
+    }
+
+Неудача
+| переменная | описание  |
+| ---------- |:---------:|
+| `error_message`    | Текст ошибки |
+
+## reset_password
+**ПРИНИМАЕТ:**
+
+**method:** POST
+
+| переменные |  по умолчанию | описание  |
+| :---------- |:---------:|:---------:|
+| `email` *(обязательно)* | null | Email - на который отправлять письмо для восстановления пароля
+
+**ВОЗВРАЩАЕТ :** JSON со свойствами:
+
+Успех
+
+    {
+        "email": "testemail@test.com",
+        "result": true
+    }
+
+Неудача
+
+| переменная | описание  |
+| ---------- |:---------:|
+| `error_message`    | Текст ошибки |
+
+
+
+
+
+# ОLD:
 ####  Сущности с которыми нужно взаимодействие:
 	
 * Пользователь
