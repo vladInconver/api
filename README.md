@@ -11,7 +11,7 @@
 # Общее:
 Инструментарий по которому можно будет взаимодействовать с данными сайта методом REST
 
-	# Авторизация
+# Авторизация
 Для всех роутов получения токена доступа обязательный заголовок авторизации который состоит из значения в кодировке base64 `client_id:client_secret` пример:
 
 `Authorization: Basic cXhaNmZDb09NajRjTks4U1hSSGE1bnVnNnZuc3dsRldTRjM3aHNXMzpMMWZ6TG9zSmY5VGx3bkNDVFo1cGtLbWRxcWtIU2hLRWkwZDRvRk5F`
