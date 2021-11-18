@@ -401,6 +401,7 @@ URL: https:exemple_domain/oauth/**[rout_name]**
 - `teacher_red_diplom` - Окончил ВУЗ с красным дипломом `true|false`
 - `teacher_red_diplom` - Окончил ВУЗ с красным дипломом `true|false`
 - `icon` - Иконка
+- `ege_oge` - Специалист ЕГЭ/ОГЭ
 
 
 ## user_curators
